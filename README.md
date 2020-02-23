@@ -2,7 +2,7 @@
 
 Event delegate for user journey and interaction tracking. Provides performant and configurable event capture via an easy to maintain object format.
 
-**Note:** See the **examples** directory for demonstration.
+See [**examples**](https://joehehir.github.io/peeping-tom/examples/) for demonstration.
 
 ## Attribute
 
