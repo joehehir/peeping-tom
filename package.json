@@ -1,6 +1,6 @@
 {
   "name": "peeping-tom",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Event delegate for user journey and interaction tracking.",
   "jsdelivr": "./dist/peeping-tom.min.js",
   "browser": "./dist/peeping-tom.min.js",
