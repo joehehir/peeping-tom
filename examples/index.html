@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>demo</title>
+    <link rel="stylesheet" href="./index.css" type="text/css">
+</head>
+<body>
+    <ul class="gallery-list">
+        <li class="gallery-item" data-peeping-tom="gallery-item-0">
+
+<!-- preview object properties -->
+<pre class="pointer-events--none"><code>'^gallery-item-': {
+  events: ['click', 'view'],
+  visible: 0.48,
+  data: (event, node) => ({
+    label: node.dataset...,
+    event,
+  }),
+  fn: data => console.log(data),
+},</code></pre>
+<!-- /preview object properties -->
+
+        </li>
+        <li class="gallery-item" data-peeping-tom="gallery-item-1"></li>
+        <li class="gallery-item" data-peeping-tom="gallery-item-2"></li>
+        <li class="gallery-item" data-peeping-tom="gallery-item-3"></li>
+        <li class="gallery-item" data-peeping-tom="gallery-item-4"></li>
+        <li class="gallery-item" data-peeping-tom="gallery-item-5"></li>
+        <li class="gallery-item" data-peeping-tom="gallery-item-6"></li>
+        <li class="gallery-item" data-peeping-tom="gallery-item-7"></li>
+        <li class="gallery-item" data-peeping-tom="gallery-item-8"></li>
+        <li class="gallery-item" data-peeping-tom="gallery-item-9"></li>
+    </ul>
+
+    <button class="async-data" data-peeping-tom="async-data">async-data</button>
+
+<script src="./oonsole/index.js"></script>
+<script src="../dist/peeping-tom.min.js"></script>
+<script>
+const targets = {
+    '^gallery-item-': { // group targets prefixed by 'gallery-item-'
+        events: ['click', 'view'],
+        visible: 0.48,
+        data: (event, node) => ({
+            label: node.dataset.peepingTom,
+            event,
+        }),
+        fn: data => oonsole.log(data), // onscreen console.log proxy
+    },
+    'async-data': {
+        events: ['click', 'view'],
+        data: new peepingTom.Deferred, // specify deferred data
+        fn: data => oonsole.log(data),
+    },
+};
+
+// start
+peepingTom.watch(targets);
+
+// resolve async data
+const then = performance.now();
+setTimeout(() => peepingTom.resolveAsyncData('async-data', (event, node) => {
+    // return computed data
+    return {
+        label: node.dataset.peepingTom,
+        event,
+        then,
+        now: performance.now(),
+    };
+}), 5000);
+</script>
+</body>
+</html>

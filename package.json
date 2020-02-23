@@ -1,0 +1,49 @@
+{
+  "name": "peeping-tom",
+  "version": "0.0.2",
+  "description": "Event delegate for user journey and interaction tracking.",
+  "jsdelivr": "./dist/peeping-tom.min.js",
+  "browser": "./dist/peeping-tom.min.js",
+  "main": "./dist/peeping-tom.min.js",
+  "module": "./src/index.js",
+  "author": "Joe Hehir <hello@joehehir.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joehehir/peeping-tom"
+  },
+  "scripts": {
+    "build": "webpack --config ./scripts/webpack.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.4.2",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-import": "^2.20.1",
+    "terser-webpack-plugin": "^2.3.4",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "dependencies": {
+    "core-js": "^3.6.4"
+  },
+  "keywords": [
+    "analytics",
+    "tracking",
+    "event",
+    "delegate",
+    "view",
+    "visibility",
+    "click",
+    "interaction",
+    "peeping-tom",
+    "peeping",
+    "tom"
+  ]
+}
