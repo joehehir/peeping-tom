@@ -16,7 +16,7 @@ ERR_PREFIX="\n${SCRIPT_NAME} ${TEXT_RED}ERR!${TEXT_RESET}";
 
 # regexp match update type argument
 if [[ $(printf "_[%s]_" "${VALID_UPDATE_TYPES[@]}") =~ .*_\[$UPDATE_TYPE\]_.* ]]; then
-    git fetch --quiet --tags origin;
+    git fetch origin;
     git checkout master;
     git pull;
 
@@ -31,7 +31,7 @@ if [[ $(printf "_[%s]_" "${VALID_UPDATE_TYPES[@]}") =~ .*_\[$UPDATE_TYPE\]_.* ]]
     git commit -m "${VERSION}" && git tag "${VERSION}" master;
     git push origin master && git push origin "${VERSION}";
 
-    # npm publish;
+    npm publish;
 
     printf "\n> ${PKG_NAME} ${VERSION} released\n\n";
 
