@@ -23,7 +23,7 @@ if [[ $(printf "_[%s]_" "${VALID_UPDATE_TYPES[@]}") =~ .*_\[$UPDATE_TYPE\]_.* ]]
     # increment package version
     VERSION=$(npm version ${UPDATE_TYPE});
 
-    npm ci;
+    npm ci --silent;
     npm run build;
 
     # push release
