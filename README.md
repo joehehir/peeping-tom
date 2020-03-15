@@ -44,7 +44,7 @@ peepingTom.watch(targets[, config]);
 
             - `Interface` any data type to be provided as an argument to **fn**.
             - `Function` definition that is invoked upon event occurrence. Provided **event** `String` and **node** `Element` arguments.
-            - `peepingTom.Deferred` class can be used to create an asynchronous, mutual dependency between **event** occurrence and invocation of the [**resolveAsyncData**](#resolveAsyncData) method.
+            - `peepingTom.Deferred` class can be used to create an asynchronous, mutual dependency between **event** occurrence and invocation of the [**`resolve`**](#resolve) method.
 
         - **fn:** `Function`
 
@@ -68,23 +68,27 @@ peepingTom.watch(targets[, config]);
 
         Global element visibility threshold. Floating point number representing a specific visibility threshold at which to invoke the `'view'` event. Expects value between `0.0` and `1.0`, where `1.0` equals entire element visibility. Defaults to `0.8`.
 
-## **resolveAsyncData()**
+## **resolve()**
 
 Sets **data** property value asynchronously.
 
-**Requires:** Asynchronous **data** declaration using — `data: new peepingTom.Deferred`
+**Requires:** Asynchronous **data** declaration using — `data: new peepingTom.Deferred`.
 
 ### Syntax
 
 ```js
-peepingTom.resolveAsyncData(key, data);
+peepingTom.resolve(key, data);
 ```
 
 ### Parameters
 
 - **key:** `String`
 
+    String matching a [**`targets`**](#targets) property key that was declared with a `Deferred` data value.
+
 - **data:** `Interface` | `Function`
+
+    Any data value that you wish to provide to the given `fn`. If a value of type `Function` is provided, it will be invoked and the returned value passed to `fn`.
 
 ## **disconnect()**
 
@@ -109,34 +113,39 @@ const targets = {
             'pageCategory': 'signup',
             'visitorType': 'high-value',
         },
-        fn: data => dataLayer.push(data),
+        fn: (data) => dataLayer.push(data),
     },
     '^recommended-product-': {
         events: ['click', 'view'],
         data: new peepingTom.Deferred,
-        fn: data => dataLayer.push(data),
+        fn: (data) => dataLayer.push(data),
         visible: 0.6,
     }
 };
 ```
 
-### **resolveAsyncData:** `Function`
+### **watch:** `Function`
 ```js
-peepingTom.resolveAsyncData('^recommended-product-', { type: 'previously-viewed' });
+peepingTom.watch(targets);
+```
+
+### **resolve:** `Function`
+```js
+peepingTom.resolve('^recommended-product-', { type: 'previously-viewed' });
 ```
 
 ## Dependencies
 
-- **IntersectionObserver** polyfill for the usual suspects.
+- **IntersectionObserver** polyfill for the usual suspects. Suggestion: [w3c/IntersectionObserver/polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill).
 
 ## Compatibility
 
-Chrome 60
+Chrome 60+
 
-Firefox 54
+Firefox 54+
 
-Internet Explorer 11
+Internet Explorer 11+
 
 ## Troubleshooting
 
-- **Click event capture:** If click events are being blocked other elements. Try applying the CSS rule `pointer-events: none;` to allow pointer events to pass through to the desired target.
+- **Click event capture:** If click events are being blocked other elements. Try applying the CSS rule `pointer-events: none;` to the overlapping elements. This will allow pointer events to pass through to the desired target.

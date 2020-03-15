@@ -12,7 +12,7 @@ export default () => {
     const { // destructure references
         options: g_options,
         observables: g_observables,
-        OBSRVRS: g_OBSRVRS,
+        obsrvrs: g_obsrvrs,
     } = global;
 
     // construct intersection threshold array and query selector string
@@ -28,7 +28,7 @@ export default () => {
     querySelectorStr = querySelectorStr.substring(0, querySelectorStr.length - 1);
 
     // attach intersection observer
-    g_OBSRVRS.INTR = new IntersectionObserver(intersection, {
+    g_obsrvrs.intr = new IntersectionObserver(intersection, {
         root: null, // browser viewport
         threshold: intersectionThresholdList.sort(),
         delay: 100,
@@ -41,14 +41,11 @@ export default () => {
     }
 
     // detect injection of nodes
-    g_OBSRVRS.MUTN = new MutationObserver(mutation);
-    g_OBSRVRS.MUTN.observe(g_options.root, {
+    g_obsrvrs.mutn = new MutationObserver(mutation);
+    g_obsrvrs.mutn.observe(g_options.root, {
         attributes: false,
         characterData: false,
         childList: true,
         subtree: true,
     });
-
-    // constantify :technologist:
-    Object.freeze(g_OBSRVRS);
 };

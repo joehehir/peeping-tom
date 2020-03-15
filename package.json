@@ -13,7 +13,8 @@
     "url": "https://github.com/joehehir/peeping-tom"
   },
   "scripts": {
-    "build": "webpack --config ./scripts/webpack.js"
+    "build": "webpack --config ./scripts/webpack.js",
+    "release": "./scripts/release.sh"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

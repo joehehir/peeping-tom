@@ -39,8 +39,8 @@ const intersection = (entries, observer) => {
 const observeNodeList = (nodeList) => {
     const { // cache references
         observables: g_observables,
-        OBSRVRS: {
-            INTR: g_INTR,
+        obsrvrs: {
+            intr: g_intr,
         },
         viewables: g_viewables,
     } = global;
@@ -51,8 +51,8 @@ const observeNodeList = (nodeList) => {
         if (identifier) {
             const regExpTargetKey = isRegExpTarget(identifier, g_observables);
             const key = regExpTargetKey || identifier;
-            if (g_observables.has(key) && g_INTR) {
-                g_INTR.observe(node);
+            if (g_observables.has(key) && g_intr) {
+                g_intr.observe(node);
                 g_viewables.add(node); // store node
             }
         }

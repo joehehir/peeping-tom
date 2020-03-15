@@ -59,12 +59,12 @@ peepingTom.watch(targets);
 
 // resolve async data
 const then = performance.now();
-setTimeout(() => peepingTom.resolveAsyncData('async-data', (event, node) => {
+setTimeout(() => peepingTom.resolve('async-data', (event, node) => {
     // return computed data
     return {
         label: node.dataset.peepingTom,
         event,
-        then,
+        long: 'somethingreallyreallyreallyreallyreallyreallyreallyreallyreallyreallyreallylong',
         now: performance.now(),
     };
 }), 5000);

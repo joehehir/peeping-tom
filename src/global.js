@@ -9,9 +9,9 @@ const options = {
 const observables = new Map();
 
 // intersection/mutation observers
-const OBSRVRS = { // Object.freeze
-    INTRS: undefined,
-    MUTN: undefined,
+const obsrvrs = {
+    intr: undefined,
+    mutn: undefined,
 };
 
 // targets argument reference
@@ -23,7 +23,7 @@ const viewables = new WeakSet();
 export default {
     options,
     observables,
-    OBSRVRS,
+    obsrvrs,
     targets,
     viewables,
 };

@@ -19,24 +19,24 @@ const ERR_MSG = `${String.fromCodePoint(0x1F440)}TypeError: invalid arguments\n\
 
 const disconnect = () => {
     const { // destructure
-        OBSRVRS: {
-            INTR: g_INTR,
-            MUTN: g_MUTN,
+        obsrvrs: {
+            intr: g_intr,
+            mutn: g_mutn,
         },
     } = global;
 
     document.body.removeEventListener('click', click);
-    if (g_INTR && g_MUTN) {
-        g_MUTN.disconnect();
+    if (g_intr && g_mutn) {
+        g_mutn.disconnect();
         // ref: https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#Browser_compatibility
-        if (g_INTR.disconnect) { // ie
-            g_INTR.disconnect();
+        if (g_intr.disconnect) { // ie
+            g_intr.disconnect();
         }
     }
 };
 
 // accept string, interface
-const resolveAsyncData = (...args) => {
+const resolve = (...args) => {
     if (args && args.length === 2 && isString(args[0])) {
         // !important: indifferent of exact or regexp keys
         const target = g_targets[args[0]];
@@ -47,8 +47,8 @@ const resolveAsyncData = (...args) => {
         }
     }
 
-    // warn invalid arguments
-    console.warn(ERR_MSG, ...args);
+    // error invalid arguments
+    console.error(ERR_MSG, ...args);
 };
 
 const watch = (targets = {}, options = {}) => {
@@ -92,8 +92,8 @@ const watch = (targets = {}, options = {}) => {
             if (target.events.includes('view')) {
                 g_observables.set(key, (target.visible || g_options.visible));
             }
-        } else { // warn invalid arguments
-            console.warn(ERR_MSG, key, value);
+        } else { // error invalid arguments
+            console.error(ERR_MSG, key, value);
         }
     };
 
@@ -115,6 +115,6 @@ const watch = (targets = {}, options = {}) => {
 export default {
     Deferred,
     disconnect,
-    resolveAsyncData,
+    resolve,
     watch,
 };

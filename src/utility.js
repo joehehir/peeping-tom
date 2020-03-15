@@ -17,7 +17,7 @@ const affixQuerySelector = (key) => {
     return (type)
         ? `[data-${g_name}${map[type][0]}="${key.replace(map[type][1], '')}"],`
         : `[data-${g_name}="${key}"],`;
-    // sample return values: '[data-tracker="exact-match"],[data-tracker^="prefix-"],[data-tracker$="-suffix"],'
+    // sample return values: '[data-peeping-tom="exact-match"],[data-peeping-tom^="prefix-"],[data-peeping-tom$="-suffix"],'
 };
 
 // expose promise callbacks
