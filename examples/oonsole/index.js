@@ -72,12 +72,12 @@ const oonsole = (function () {
         get(target, property, receiver) {
             const fn = target[property];
             return (...args) => {
-                // invoke default then extension
+                // invoke native then extension
                 if (isFunction(fn) && isFunction(extension)) {
                     const result = fn.apply(receiver, args);
                     extension(args);
 
-                    // return default
+                    // return native
                     return result;
                 }
                 return undefined;

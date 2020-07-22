@@ -7,7 +7,6 @@ import {
 } from './utility';
 import observe from './observe';
 import click from './handler/click';
-import Deferred from './Deferred';
 
 const { // cache references
     options: g_options,
@@ -17,6 +16,9 @@ const { // cache references
 
 const ERR_MSG = `${String.fromCodePoint(0x1F440)}TypeError: invalid arguments\n\t`;
 
+// exposed empty class to identify deferred data
+class Deferred {}
+
 const disconnect = () => {
     const { // destructure
         obsrvrs: {
@@ -25,11 +27,11 @@ const disconnect = () => {
         },
     } = global;
 
-    document.body.removeEventListener('click', click);
+    g_options.root.removeEventListener('click', click);
     if (g_intr && g_mutn) {
         g_mutn.disconnect();
         // ref: https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#Browser_compatibility
-        if (g_intr.disconnect) { // ie
+        if (g_intr.disconnect) { // internet explorer
             g_intr.disconnect();
         }
     }
@@ -109,7 +111,7 @@ const watch = (targets = {}, options = {}) => {
     }
 
     // attach click event delegate
-    document.body.addEventListener('click', click);
+    g_options.root.addEventListener('click', click);
 };
 
 export default {
