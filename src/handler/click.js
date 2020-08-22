@@ -1,19 +1,17 @@
 import {
+    obsrvrs as g_obsrvrs,
+    targets as g_targets,
+    viewables as g_viewables,
+} from '../global';
+import invoke from './invoke';
+import {
     isRegExpTarget,
     isTargetNode,
 } from '../utility';
-import global from '../global';
-import invoke from './invoke';
 
 // click event delegate
 export default (e) => {
-    const { // destructure references
-        obsrvrs: {
-            intr: g_intr,
-        },
-        targets: g_targets,
-        viewables: g_viewables,
-    } = global;
+    const g_intr = g_obsrvrs.intr;
 
     const identifier = isTargetNode(e.target);
     if (identifier) {

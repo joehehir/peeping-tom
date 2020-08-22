@@ -1,12 +1,12 @@
+import { targets as g_targets } from '../global';
 import {
     defer,
     isFunction,
 } from '../utility';
-import global from '../global';
 
 // event handler
 export default (key, event, node) => {
-    const target = global.targets[key];
+    const target = g_targets[key];
     if (!(target && target.data && isFunction(target.fn))) {
         return;
     }
@@ -20,7 +20,7 @@ export default (key, event, node) => {
 
     // detect deferred data
     if (target.data.promise) {
-        // !important: indifferent of exact or regexp keys
+        // !important: exact or regexp keys
         target.data.promise.then((data) => {
             invokeFn(data);
         }).catch(() => { target.data = defer(); });

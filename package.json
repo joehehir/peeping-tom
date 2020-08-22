@@ -2,10 +2,8 @@
   "name": "peeping-tom",
   "version": "0.0.5",
   "description": "Event delegate for user journey and interaction tracking.",
-  "jsdelivr": "./dist/peeping-tom.min.js",
-  "browser": "./dist/peeping-tom.min.js",
-  "main": "./dist/peeping-tom.min.js",
-  "module": "./src/index.js",
+  "module": "./dist/peeping-tom.esm.js",
+  "main": "./dist/peeping-tom.umd.js",
   "author": "Joe Hehir <hello@joehehir.com>",
   "license": "MIT",
   "repository": {
@@ -13,26 +11,23 @@
     "url": "https://github.com/joehehir/peeping-tom"
   },
   "scripts": {
-    "build": "webpack --config ./scripts/webpack.js",
-    "release": "./scripts/release.sh"
+    "build": "rollup --config ./rollup.config.js",
+    "dev": "rollup --config ./rollup.config.js --watch"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/preset-env": "^7.8.4",
-    "babel-eslint": "^10.0.3",
-    "babel-loader": "^8.0.6",
-    "css-loader": "^3.4.2",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-loader": "^3.0.3",
-    "eslint-plugin-import": "^2.20.1",
-    "terser-webpack-plugin": "^2.3.4",
-    "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0"
-  },
-  "dependencies": {
-    "core-js": "^3.6.4"
+    "@babel/core": "^7.10.4",
+    "@babel/plugin-transform-arrow-functions": "^7.10.4",
+    "@babel/plugin-transform-block-scoped-functions": "^7.10.4",
+    "@babel/plugin-transform-block-scoping": "^7.11.1",
+    "@babel/plugin-transform-function-name": "^7.10.4",
+    "@babel/plugin-transform-shorthand-properties": "^7.10.4",
+    "@babel/plugin-transform-template-literals": "^7.10.5",
+    "@rollup/plugin-babel": "^5.1.0",
+    "eslint": "^7.5.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "rollup": "^2.22.2",
+    "rollup-plugin-terser": "^6.1.0"
   },
   "keywords": [
     "analytics",

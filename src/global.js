@@ -20,7 +20,7 @@ const targets = {};
 // weak references to connected observable nodes
 const viewables = new WeakSet();
 
-export default {
+export {
     options,
     observables,
     obsrvrs,
