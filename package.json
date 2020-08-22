@@ -1,6 +1,6 @@
 {
   "name": "peeping-tom",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Event delegate for user journey and interaction tracking.",
   "module": "./dist/peeping-tom.esm.js",
   "main": "./dist/peeping-tom.umd.js",
