@@ -1,15 +1,18 @@
-
-/* eslint-disable-next-line no-unused-vars, func-names */
-const oonsole = (function () {
-    // ...transpile this script...
+/* eslint-disable no-underscore-dangle, no-unused-vars, func-names */
+const oonsole = (() => {
     if (!(window && window.Proxy)) return console.log;
+
+    // poor man's css minimiser
+    const minCSS = (s) => s
+        .replace(/[\n\r]|\s{2,}/g, '')
+        .replace(/([:,])\s+|\s+(\{)/g, '$1$2');
 
     // hyperscript-esque
     const h = (tag, attrs, content) => {
         const node = document.createElement(tag);
         Object.entries(attrs).forEach(([name, value]) => {
-            if (name === 'style') { // concat inline styles
-                node.setAttribute(name, Object.entries(value).reduce((acc, rule) => acc.concat(`${rule.join(':')};`), ''));
+            if (name === 'style') {
+                node.setAttribute(name, minCSS(value));
             } else node.setAttribute(name, value);
         });
 
@@ -21,48 +24,85 @@ const oonsole = (function () {
         return node;
     };
 
-    // scoped stylesheet
-    const styles = `
-        .feed {
+    const css = {
+        root: `
             display: flex;
-            flex-direction: column-reverse;
-            flex: auto;
-            overflow: auto;
-            white-space: pre-wrap;
-            font-family: monospace;
+            flex-flow: column;
+            position: fixed;
+            width: 100vw;
+            height: 10em;
+            bottom: 0;
             background-color: #121212;
-            color: rgba(255, 255, 255, 0.87);
-            border-radius: inherit;
-        }
-        .output p {
-            padding-left: 0.4em;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-        }
-    `;
+        `,
+        scoped: `
+            ._c {
+                display: flex;
+                flex-direction: column-reverse;
+                flex: auto;
+                overflow: auto;
+                white-space: pre-wrap;
+                font-family: monospace;
+                background-color: #121212;
+                color: rgba(255, 255, 255, 0.88);
+                border-radius: inherit;
+            }
+            ._o {
+                width: max-content;
+                min-width: 100%;
+            }
+            ._r {
+                padding: 0 3ch 0 3ch;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+                cursor: default;
+            }
+            ._r i {
+                display: inline-block;
+                transform: scale(0.7, 1.2);
+            }
+            ._r i,
+            ._r code {
+                pointer-events: none;
+            }
+        `,
+    };
 
-    const output = h('output', { class: 'output' });
-    const root = h('aside', {
-        id: 'oonsole',
-        style: { /* eslint-disable quote-props */
-            'display': 'flex',
-            'flex-flow': 'column',
-            'border-radius': '0.4em',
-            'background-color': '#121212',
-            'position': 'fixed',
-            'width': '75vw',
-            'height': '10em',
-            'bottom': '1em',
-            'right': '1em',
-        }, /* eslint-enable quote-props */
-    }, [
-        h('style', { scoped: '' }, styles),
-        h('div', { class: 'feed' }, output),
+    const output = h('output', { class: '_o' });
+    output.addEventListener('click', (e) => {
+        const selection = window.getSelection().toString(); // text selection
+        const parent = (e.target && e.target.classList.contains('_r')) ? e.target : null;
+
+        if (!(selection.length) && parent) {
+            const code = parent.querySelector('code');
+            if (code && code._args) { // toggle pretty-print
+                code.textContent = (code.classList.contains('_pp'))
+                    ? JSON.stringify(...code._args)
+                    : JSON.stringify(...code._args, null, 2);
+
+                code.classList.toggle('_pp');
+            }
+        }
+    });
+
+    const root = h('aside', { class: 'oonsole', style: css.root }, [
+        h('style', { scoped: '' }, minCSS(css.scoped)),
+        h('div', { class: '_c' }, output),
     ]);
+
+    // inject
     document.body.append(root);
 
     const extension = (args) => {
         if (output) {
-            output.append(h('p', {}, JSON.stringify(...args)));
+            const row = h('p', { class: '_r' }, [
+                h('i', {}, '\u25BA'),
+                (() => {
+                    const code = h('code', {}, JSON.stringify(...args));
+                    code._args = args;
+                    return code;
+                })(),
+            ]);
+
+            output.append(row);
         }
     };
 
@@ -80,9 +120,12 @@ const oonsole = (function () {
                     // return native
                     return result;
                 }
+
                 return undefined;
             };
         },
     };
+
     return new Proxy(console, handler);
-}());
+})();
+/* eslint-disable no-underscore-dangle, no-unused-vars, func-names */

@@ -52,7 +52,7 @@ peepingTom.watch(targets[, config]);
 
         - **visible:** `Number` **|Optional**
 
-            Floating point number representing a specific visibility threshold at which to invoke the `'view'` event. Expects value between `0.0` and `1.0`, where `1.0` equals entire element visibility.
+            Floating point number representing a specific visibility threshold at which to invoke the `'view'` event. Expects positive value between `0.0` and `1.0`, where `1.0` equals entire element visibility.
 
 - **config:** `Object` **|Optional**
 
@@ -66,7 +66,7 @@ peepingTom.watch(targets[, config]);
 
     - **visible:** `Number`
 
-        Global element visibility threshold. Floating point number representing a specific visibility threshold at which to invoke the `'view'` event. Expects value between `0.0` and `1.0`, where `1.0` equals entire element visibility. Defaults to `0.8`.
+        Global element visibility threshold. Floating point number representing a specific visibility threshold at which to invoke the `'view'` event. Expects positive value between `0.0` and `1.0`, where `1.0` equals entire element visibility. Defaults to `0.8`.
 
 ## **resolve()**
 
@@ -134,17 +134,9 @@ peepingTom.watch(targets);
 peepingTom.resolve('^recommended-product-', { type: 'previously-viewed' });
 ```
 
-## Dependencies
-
-- **IntersectionObserver** polyfill for the usual suspects. Suggestion: [w3c/IntersectionObserver/polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill).
-
 ## Compatibility
 
-Chrome 60+
-
-Firefox 54+
-
-Internet Explorer 11+
+- **IntersectionObserver** polyfill is required for the usual suspects. Suggestion: [w3c/IntersectionObserver/polyfill](https://github.com/w3c/IntersectionObserver/tree/master/polyfill).
 
 ## Troubleshooting
 

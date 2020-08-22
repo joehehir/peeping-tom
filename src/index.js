@@ -1,31 +1,27 @@
-import global from './global';
+import {
+    obsrvrs as g_obsrvrs,
+    observables as g_observables,
+    options as g_options,
+    targets as g_targets,
+} from './global';
+import click from './handler/click';
+import observe from './observe';
 import {
     defer,
+    isElementNode,
     isString,
     isStringOrStringArray,
     isFunction,
 } from './utility';
-import observe from './observe';
-import click from './handler/click';
-
-const { // cache references
-    options: g_options,
-    observables: g_observables,
-    targets: g_targets,
-} = global;
 
 const ERR_MSG = `${String.fromCodePoint(0x1F440)}TypeError: invalid arguments\n\t`;
 
-// exposed empty class to identify deferred data
-class Deferred {}
+// noop deferred data identifier
+function Deferred() {}
 
 const disconnect = () => {
-    const { // destructure
-        obsrvrs: {
-            intr: g_intr,
-            mutn: g_mutn,
-        },
-    } = global;
+    const g_intr = g_obsrvrs.intr;
+    const g_mutn = g_obsrvrs.mutn;
 
     g_options.root.removeEventListener('click', click);
     if (g_intr && g_mutn) {
@@ -38,24 +34,32 @@ const disconnect = () => {
 };
 
 // accept string, interface
-const resolve = (...args) => {
-    if (args && args.length === 2 && isString(args[0])) {
-        // !important: indifferent of exact or regexp keys
-        const target = g_targets[args[0]];
+const resolve = (key, value) => {
+    if (isString(key)) {
+        // !important: exact or regexp keys
+        const target = g_targets[key];
         // contains deferred data object
         if (target && target.data && target.data.resolve) {
-            target.data.resolve(args[1]); // resolve provided data
+            target.data.resolve(value); // resolve provided value
             return;
         }
     }
 
-    // error invalid arguments
-    console.error(ERR_MSG, ...args);
+    // !error: invalid arguments
+    console.error(ERR_MSG, key, value);
 };
 
-const watch = (targets = {}, options = {}) => {
+const watch = (targets, options) => {
+    /* eslint-disable no-param-reassign */
+    targets = targets || {};
+    options = options || {};
+    /* eslint-enable no-param-reassign */
+
     // restructure arguments
-    const omit = ((acc, [key, value]) => ((value) ? { ...acc, [key]: value } : acc));
+    const omit = (acc, [key, value]) => {
+        if (value) acc[key] = value;
+        return acc;
+    };
     const struct = {
         options: (({
             dataset,
@@ -75,13 +79,15 @@ const watch = (targets = {}, options = {}) => {
         })), // append omitted properties
     };
 
+    const isThreshold = (n) => !!(n !== undefined && n !== null && typeof n === 'number' && (n - 0) * (1 - n) >= 0);
+
     // prepare targets data
-    const expected = { events: isStringOrStringArray, fn: isFunction };
+    const required = { events: isStringOrStringArray, fn: isFunction };
     const prepare = ([key, value]) => {
         const target = struct.target(value);
 
         // ensure required properties exist
-        if (Object.entries(expected).every(([prop, req]) => (target[prop] && req(target[prop])))) {
+        if (Object.entries(required).every(([prop, req]) => (target[prop] && req(target[prop])))) {
             // create deferred data object
             if (target.data && target.data instanceof Deferred) {
                 target.data = defer();
@@ -92,9 +98,12 @@ const watch = (targets = {}, options = {}) => {
 
             // store observable key and applicable intersection threshold
             if (target.events.includes('view')) {
-                g_observables.set(key, (target.visible || g_options.visible));
+                const vis = (Object.prototype.hasOwnProperty.call(target, 'visible') && isThreshold(target.visible))
+                    ? Math.abs(target.visible) // ensure positive
+                    : g_options.visible;
+                g_observables.set(key, vis);
             }
-        } else { // error invalid arguments
+        } else { // !error: invalid arguments
             console.error(ERR_MSG, key, value);
         }
     };
@@ -105,13 +114,23 @@ const watch = (targets = {}, options = {}) => {
     // merge default and argument options
     Object.assign(g_options, struct.options(options));
 
-    // attach observers
-    if (g_observables.size) {
-        observe();
-    }
+    // validate global options
+    if (!Object.entries({
+        dataset: isString,
+        root: isElementNode,
+        visible: isThreshold,
+    }).some(([prop, req]) => !(Object.prototype.hasOwnProperty.call(options, prop) ? req(options[prop]) : true))) {
+        // attach observers
+        if (g_observables.size) {
+            observe();
+        }
 
-    // attach click event delegate
-    g_options.root.addEventListener('click', click);
+        // attach click event delegate
+        g_options.root.addEventListener('click', click);
+    } else {
+        // !error: invalid arguments
+        console.error(ERR_MSG, options);
+    }
 };
 
 export default {

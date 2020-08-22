@@ -9,7 +9,7 @@
         <li class="gallery-item" data-peeping-tom="gallery-item-0">
 
 <!-- preview object properties -->
-<pre class="pointer-events--none"><code>'^gallery-item-': {
+<pre class="preview pointer-events--none"><code class="preview">'^gallery-item-': {
   events: ['click', 'view'],
   visible: 0.48,
   data: (event, node) => ({
@@ -35,7 +35,7 @@
     <button class="async-data" data-peeping-tom="async-data">async-data</button>
 
 <script src="./oonsole/index.js"></script>
-<script src="../dist/peeping-tom.min.js"></script>
+<script src="../dist/peeping-tom.umd.js"></script>
 <script>
 const targets = {
     '^gallery-item-': { // group targets prefixed by 'gallery-item-'

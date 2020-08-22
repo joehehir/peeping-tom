@@ -1,23 +1,21 @@
-import global from './global';
 import {
-    affixQuerySelector,
-} from './utility';
+    obsrvrs as g_obsrvrs,
+    observables as g_observables,
+    options as g_options,
+} from './global';
 import {
     intersection,
     mutation,
     observeNodeList,
 } from './handler/observer';
+import {
+    affixQuerySelector,
+} from './utility';
 
 export default () => {
-    const { // destructure references
-        options: g_options,
-        observables: g_observables,
-        obsrvrs: g_obsrvrs,
-    } = global;
-
     // construct intersection threshold array and query selector string
     const intersectionThresholdList = [g_options.visible];
-    let querySelectorStr = [...g_observables].reduce((acc, [key, value]) => {
+    let querySelectorStr = Array.from(g_observables).reduce((acc, [key, value]) => {
         if (!intersectionThresholdList.includes(value)) { // push unique values
             intersectionThresholdList.push(value);
         }

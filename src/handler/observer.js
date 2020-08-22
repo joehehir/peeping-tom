@@ -1,17 +1,16 @@
 import {
+    obsrvrs as g_obsrvrs,
+    observables as g_observables,
+    viewables as g_viewables,
+} from '../global';
+import invoke from './invoke';
+import {
     isRegExpTarget,
     isTargetNode,
 } from '../utility';
-import global from '../global';
-import invoke from './invoke';
 
 // detect view event and unobserve node
 const intersection = (entries, observer) => {
-    const { // cache references
-        observables: g_observables,
-        viewables: g_viewables,
-    } = global;
-
     const intersect = (entry) => {
         // validate node and intersection
         const identifier = isTargetNode(entry.target);
@@ -37,13 +36,7 @@ const intersection = (entries, observer) => {
 
 // ref: https://dom.spec.whatwg.org/#garbage-collection
 const observeNodeList = (nodeList) => {
-    const { // cache references
-        observables: g_observables,
-        obsrvrs: {
-            intr: g_intr,
-        },
-        viewables: g_viewables,
-    } = global;
+    const g_intr = g_obsrvrs.intr;
 
     const observe = (node) => {
         // match exact or regexp key and observe node

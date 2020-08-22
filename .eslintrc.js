@@ -2,10 +2,7 @@ module.exports = {
     'env': {
         'browser': true,
     },
-    'parser': 'babel-eslint',
-    'extends': [
-        'airbnb-base',
-    ],
+    'extends': ['airbnb-base'],
     'rules': {
         'no-console': 'off',
         'indent': ['error', 4],
